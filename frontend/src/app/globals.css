@@ -1,0 +1,281 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Reset font family to use Tailwind's configured fonts */
+body {
+  font-family: var(--font-geist-sans, sans-serif); /* Default to Geist Sans */
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+  background: #d1d5db; /* Light mode default */
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8; /* Light mode default */
+}
+
+.dark ::-webkit-scrollbar {
+  width: 6px; /* Some dark modes preferred 6px */
+}
+.dark ::-webkit-scrollbar-track {
+  background: #15121e; /* Dark mode sidebar specific */
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #2d2839; /* Dark mode default */
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #4a4555; /* Dark mode default */
+}
+
+/* Textarea specific scrollbar override */
+textarea::-webkit-scrollbar {
+  width: 8px;
+}
+textarea::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.02); /* Light mode */
+}
+textarea::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1); /* Light mode */
+}
+textarea::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2); /* Light mode */
+}
+.dark textarea::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02); /* Dark mode */
+}
+.dark textarea::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1); /* Dark mode */
+}
+.dark textarea::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2); /* Dark mode */
+}
+
+
+/* Glassmorphism Panel/Card Styles */
+.glass-panel { /* Light Mode Default */
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+}
+.dark .glass-panel { /* Dark Mode */
+  background: rgba(25, 20, 35, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.glass-card { /* Light Mode Default */
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+.dark .glass-card { /* Dark Mode */
+  background: rgba(21, 16, 34, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08); /* Updated from design */
+}
+
+.glass-card-darker { /* Light mode specific */
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+/* No explicit dark mode for glass-card-darker, will inherit or omit if not used */
+
+
+.glass-item { /* Light Mode Default */
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.glass-item:hover { /* Light Mode Default */
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(137, 91, 245, 0.2);
+  transform: scale(1.01);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.01);
+}
+.dark .glass-item { /* Dark Mode */
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+}
+.dark .glass-item:hover { /* Dark Mode */
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border-color: rgba(137, 91, 245, 0.3);
+  transform: scale(1.01);
+  box-shadow: 0 10px 30px -10px rgba(137, 91, 245, 0.15);
+}
+
+/* Custom Checkbox Styles */
+.custom-checkbox { /* Light mode default */
+    border-color: #cbd5e1;
+}
+.custom-checkbox:checked { /* Light mode default */
+    background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDHKeDF5cTXWhY6Hl2tWcVqXCFMIkzf7HKp-Bg_-VmgnvjX6rNuFOzUzuXBpizRzb0teaAlEINI1Dj8v1b_xra73KwvD9Lu6rb0nWUzMqO5BR4et2ay4I2LfOBV-G8PaZyVZ7VVZbyM8mcF5Jhm8RUyVai0TG9U-NAjpEVfhgOLUgV7zcctYkAsPFqLfxUwCTAy4RhozgkHKORdF5zsHwDKoo6-jeaDuqG1AEInojZaAw3oEzLrkzVcjt3JQ5iuDi88b8F9_lm8J5jA");
+    border-color: transparent;
+    background-color: #895bf5;
+}
+.dark .custom-checkbox { /* Dark mode */
+    border-color: #2d2839; /* Adjusted for dark mode contrast */
+}
+.dark .custom-checkbox:checked { /* Dark mode */
+    background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA21AXY88hoLrRetNzxZqj56po_WJk-jEAJzIviM6fLMms9jueEEQuK0uRe_fsvcXKJcfdU-i59USR3Cn58a1ZMvsXds3aWE8vB85aLHQffwIEQJXwEmcbxrkD4QXxw53nBafncn8oUE_e9OKLs0UoRW-f1TRqz7c5ZPt2lhuEVZf3jMHYdMxR0gbIESDnkDr3BDt-PXk7ay7_X89hLgQiguJ03-U5G6IX8AF50VxuzxWWyWKe_TE61g1M8bd2RKtNeVD17UL50OIot");
+    border-color: transparent;
+    background-color: #895bf5;
+}
+
+/* AI Bubble Gradient */
+.ai-bubble-gradient { /* Light mode default */
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(137, 91, 245, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+.dark .ai-bubble-gradient { /* Dark mode */
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+    border: 1px solid rgba(137, 91, 245, 0.2);
+}
+
+/* User Bubble Gradient */
+.user-bubble-gradient { /* Default is common for both, but some values differ */
+    background: linear-gradient(135deg, #895bf5 0%, #6c42ca 100%);
+    box-shadow: 0 4px 15px rgba(137, 91, 245, 0.25); /* Light */
+}
+.dark .user-bubble-gradient {
+    box-shadow: 0 4px 15px rgba(137, 91, 245, 0.3); /* Dark */
+}
+
+
+/* Gradient Border Input (light mode only, complex, requires focus-within and specific styling) */
+.gradient-border-input:focus-within {
+    background: linear-gradient(#ffffff, #ffffff) padding-box,
+                linear-gradient(to right, #6366f1, #ec4899) border-box;
+    border: 2px solid transparent;
+    border-radius: 1rem;
+}
+
+
+/* Text gradients */
+.text-gradient {
+    background: linear-gradient(to right, #895bf5, #00d4ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.gradient-text-header {
+    background: linear-gradient(135deg, #4f46e5 0%, #a855f7 50%, #ec4899 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.gradient-text-heading {
+    background: linear-gradient(to right, #7c3aed, #db2777, #ea580c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.dark .gradient-text-heading {
+    background: linear-gradient(to right, #895bf5, #d946ef, #f97316);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* New: Text Glow */
+.text-glow {
+    text-shadow: 0 0 20px rgba(137, 91, 245, 0.5);
+}
+
+/* New: Gradient Border Mask for Modal */
+.gradient-border-mask {
+    position: relative;
+    background: #131118;
+    background-clip: padding-box;
+    border: 1px solid transparent;
+    border-radius: 2rem;
+}
+.gradient-border-mask::before {
+    content: "";
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    z-index: -1;
+    margin: -1px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(82,14,241,0.5), rgba(236,72,153,0.5));
+}
+
+/* Hero Section Specific Styles */
+.bg-stripes { /* Light mode default */
+    background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.02) 10%, transparent 10%, transparent 50%, rgba(0, 0, 0, 0.02) 50%, rgba(0, 0, 0, 0.02) 60%, transparent 60%, transparent 100%);
+    background-size: 20px 20px;
+}
+.dark .bg-stripes { /* Dark mode */
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 10%, transparent 10%, transparent 50%, rgba(255, 255, 255, 0.03) 50%, rgba(255, 255, 255, 0.03) 60%, transparent 60%, transparent 100%);
+}
+
+.glass-button-secondary { /* Light mode default */
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(6, 182, 212, 0.4);
+    color: #0891b2;
+}
+.glass-button-secondary:hover { /* Light mode default */
+    background: rgba(6, 182, 212, 0.05);
+    border-color: rgba(6, 182, 212, 0.8);
+    box-shadow: 0 4px 15px rgba(6, 182, 212, 0.15);
+    transform: translateY(-2px);
+}
+.dark .glass-button-secondary { /* Dark mode */
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(6, 182, 212, 0.3); /* Cyan border */
+    color: #00d4ff; /* Adjusted for dark mode contrast */
+}
+.dark .glass-button-secondary:hover { /* Dark mode */
+    background: rgba(6, 182, 212, 0.1);
+    border-color: rgba(6, 182, 212, 0.6);
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+}
+
+
+.particle { /* Light mode default */
+    position: absolute;
+    border-radius: 50%;
+    background: #895bf5;
+    opacity: 0.2;
+}
+.dark .particle { /* Dark mode */
+    background: white;
+}
+
+
+/* Keyframes and Animations (added to tailwind.config.ts, but also include direct CSS for older syntax if needed or if not fully covered by Tailwind's animation utility) */
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+.animate-enter {
+    animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

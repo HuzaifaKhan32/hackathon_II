@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Dashboard Chat Panel</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Config -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#895bf5",
+                        "primary-dark": "#6c42ca",
+                        "secondary": "#2d2839",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#131118",
+                        "glass-border": "rgba(255, 255, 255, 0.08)",
+                        "glass-bg": "rgba(255, 255, 255, 0.03)",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'subtle-grid': "url('data:image/svg+xml,%3Csvg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"%239C92AC\" fill-opacity=\"0.05\" fill-rule=\"evenodd\"%3E%3Ccircle cx=\"3\" cy=\"3\" r=\"1\"/%3E%3C/g%3E%3C/svg%3E')",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2d2839; 
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4a4555; 
+        }
+
+        /* Glassmorphism utility */
+        .glass-panel {
+            background: rgba(29, 25, 38, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .ai-bubble-gradient {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(137, 91, 245, 0.2);
+        }
+
+        .user-bubble-gradient {
+            background: linear-gradient(135deg, #895bf5 0%, #6c42ca 100%);
+            box-shadow: 0 4px 15px rgba(137, 91, 245, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display h-screen w-screen overflow-hidden flex items-center justify-center p-4 sm:p-8">
+<!-- Main Layout Container mimicking a dashboard with a sidebar -->
+<div class="flex w-full max-w-[1440px] h-[90vh] bg-[#0c0a0f] rounded-[2rem] overflow-hidden border border-white/5 shadow-2xl relative">
+<!-- Faux Dashboard Content (Left Side - Blurred out or dimmed to focus on chat) -->
+<div class="hidden lg:flex flex-1 flex-col p-8 opacity-30 pointer-events-none border-r border-white/5 bg-[url('https://placeholder.pics/svg/600')] bg-cover bg-center" data-alt="Abstract dashboard background pattern">
+<div class="h-full w-full bg-gradient-to-br from-primary/10 to-transparent rounded-xl"></div>
+</div>
+<!-- Chat Panel (Right Side - 20% width approx, but responsive) -->
+<div class="w-full lg:w-[400px] xl:w-[25%] flex flex-col h-full bg-[#131118] border-l border-white/5 relative z-10 shadow-[-10px_0_30px_rgba(0,0,0,0.5)]">
+<!-- Subtle Background Pattern -->
+<div class="absolute inset-0 bg-subtle-grid pointer-events-none opacity-50"></div>
+<!-- Header -->
+<div class="relative z-20 flex flex-col flex-shrink-0">
+<!-- Top Gradient Fade -->
+<div class="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-primary/10 to-transparent pointer-events-none"></div>
+<div class="flex items-center justify-between px-6 py-5 border-b border-white/5 bg-[#131118]/80 backdrop-blur-md">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="w-10 h-10 rounded-full bg-cover bg-center ring-2 ring-white/10" data-alt="AI Robot Avatar face" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA43NjFAsvt0uyZifeeyNPLzDMCAI6BSwIqT_JqQKoW_KtlGvqW0K3OmHjGOlgnEP3IedxeUKlLQCCBLHOMleoem2n8d7P8FlPhe5CxcuHd-r5avDpzwGmqbdvVOgeGV9a1P8bUJjJFTWsF2KxLrDabrK_QoHz9gywgrk_04m78_0PGVjzp5QOEWZF3JZoCmod4gAWrmSOFW65M4C-X66JWPmDeoP_G5xA2W9CIfpYX_62csFInohhXz8b4lAKeryOKs9wQsTfBMiAt");'></div>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#131118] rounded-full"></div>
+</div>
+<div class="flex flex-col">
+<h2 class="text-white text-base font-bold leading-tight tracking-tight">AI Assistant</h2>
+<span class="text-primary text-xs font-medium tracking-wide">Online</span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-[#a59cba] transition-colors">
+<span class="material-symbols-outlined text-[18px]">remove</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-[#a59cba] transition-colors">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Messages Area -->
+<div class="flex-1 overflow-y-auto px-4 py-6 flex flex-col gap-6 relative z-10 scroll-smooth">
+<!-- Date Separator -->
+<div class="flex justify-center">
+<span class="px-3 py-1 rounded-full bg-white/5 text-[10px] font-bold text-[#a59cba] uppercase tracking-widest border border-white/5">Today</span>
+</div>
+<!-- AI Message 1 -->
+<div class="flex items-end gap-3 group">
+<div class="w-8 h-8 rounded-full bg-cover bg-center shrink-0 ring-1 ring-white/10" data-alt="AI Robot Avatar face" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDIagFHoMZchyzaikWhMkWLvlL0H7TnJu0MqBq2gBC2wkoDGDB2gn6LLOLohdqA6mJ2_EcWtAVahzj1hYnlDREy8JqaS2L0rPRk9nVAJqnf0-7d71GZsFQ-FmW3X7yE9sOMDHlEy1vynk3iKzlKmSM4DbaF-kGRpAOYa428mkVsZ4fQ_E1WcPLi68i-kMOitywZpHlF7UeIUUW6_je201UZgcSYcbJBFpWyuefM_gRKIne894aIzWorZBAtW-DTrQX8dEP2Y_MuH_dX");'></div>
+<div class="flex flex-col gap-1 max-w-[85%]">
+<div class="ai-bubble-gradient p-4 rounded-2xl rounded-bl-none text-white text-sm font-body leading-relaxed shadow-lg backdrop-blur-sm">
+                            Hello! I noticed you have <span class="text-primary font-bold">3 overdue tasks</span> from the "Q3 Marketing" project. Should we reschedule them?
+                        </div>
+<span class="text-[#a59cba] text-[10px] pl-1 opacity-0 group-hover:opacity-100 transition-opacity">10:42 AM</span>
+</div>
+</div>
+<!-- User Message -->
+<div class="flex items-end gap-3 justify-end group">
+<div class="flex flex-col gap-1 items-end max-w-[85%]">
+<div class="user-bubble-gradient p-4 rounded-2xl rounded-br-none text-white text-sm font-body leading-relaxed shadow-lg">
+                            Yes, please move them to tomorrow morning.
+                        </div>
+<span class="text-[#a59cba] text-[10px] pr-1 opacity-0 group-hover:opacity-100 transition-opacity text-right">10:43 AM</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-cover bg-center shrink-0 ring-1 ring-white/10" data-alt="User profile photo woman" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC_mB3Xsd3kKf3aHOU8g4OYZOEiDWSHEud6tlA_ZFGVLHrMMubVOIEJ-VGhL4ETfIhjpZm2KyY0CKbd46sU4Uv2BEFlTPv6POeczu3fYEIit5mcpw8h0OuqWFC85_z-I99ImQl_1k6YB4lCAdhWPfpB4MGvEHZvMaYufo8hmBwnBujiVJ54AM31BmCtQeKS81dHcxRJQz8Fa8E975uquO_1fTa9ie7VopdF4N88myh6vl-m20omCRM5ZwAFg8SoEM23643NUVakIulO");'></div>
+</div>
+<!-- AI Message 2 -->
+<div class="flex items-end gap-3 group">
+<div class="w-8 h-8 rounded-full bg-cover bg-center shrink-0 ring-1 ring-white/10" data-alt="AI Robot Avatar face" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCzOWG6H2QIoXywGGz9cJvlUAM-ERHontgHhN3Gj5DCo23mjMqFIj2cIOPthgt4nsVwKNI232grVJ4P3dqu2SoDyYv_zKfAr1xJgY8KggLT_hqZtBUVyKgTrU22v3YWMoSx8vF6e2EsXe0Ggx6u3zOKO65hA5BVZKj6-mqn9w6YD1tbCtbd2RzlyMGNJQviw-qb8zv2E0b1rDDbWKywccze-VAi6gHoBKpnVvnVMQLUY3SReFdLkQrmfw5s0vza7P9hYh4ubqgcwTOF");'></div>
+<div class="flex flex-col gap-1 max-w-[85%]">
+<div class="ai-bubble-gradient p-4 rounded-2xl rounded-bl-none text-white text-sm font-body leading-relaxed shadow-lg backdrop-blur-sm">
+                            Done. I've updated your schedule. Would you like me to send a notification to the team?
+                        </div>
+<span class="text-[#a59cba] text-[10px] pl-1 opacity-0 group-hover:opacity-100 transition-opacity">10:43 AM</span>
+</div>
+</div>
+<!-- AI Typing Indicator -->
+<div class="flex items-end gap-3">
+<div class="w-8 h-8 rounded-full bg-cover bg-center shrink-0 ring-1 ring-white/10" data-alt="AI Robot Avatar face" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuALqgLTaJDoGaHOuMfhfeF56lfLz502HYc8e3xFtRVclAXiEBsiNzCsg_8FYKSPyP20nzfTwqbCXWptfqfcPCCKLfB0v-nzII3ABXSFUQ8JBKrObYCyL7FlvgXBlNAVO8aXtu2pDRKpW3Yfk0-mcX6lbfyexG_BTYoYCW89JAZ5tpwDjP6JK2tb4XmndhE1mFpL8n2wA8ye8HBRp6RhnSZ0ImxHYEuAAPVmBV5kMIMl_SxCczM9dCuPNQahTNhfN2j7CWKSmZ-oivA_");'></div>
+<div class="ai-bubble-gradient px-4 py-3 rounded-2xl rounded-bl-none shadow-lg backdrop-blur-sm flex items-center gap-1 h-10 w-16">
+<div class="w-1.5 h-1.5 bg-primary/60 rounded-full animate-bounce"></div>
+<div class="w-1.5 h-1.5 bg-primary/60 rounded-full animate-bounce delay-75"></div>
+<div class="w-1.5 h-1.5 bg-primary/60 rounded-full animate-bounce delay-150"></div>
+</div>
+</div>
+<!-- Spacer for scrolling -->
+<div class="h-2"></div>
+</div>
+<!-- Composer / Input Area -->
+<div class="p-4 pt-2 relative z-20">
+<!-- Glassmorphism Container for Input -->
+<div class="relative w-full group">
+<!-- Glow effect on focus (simulated with absolute div) -->
+<div class="absolute -inset-0.5 bg-gradient-to-r from-primary to-purple-600 rounded-3xl opacity-20 blur transition duration-500 group-hover:opacity-40"></div>
+<div class="relative flex items-end gap-2 bg-[#1c1924]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-2 pr-2 shadow-2xl">
+<div class="flex-1 flex items-center min-h-[48px]">
+<textarea class="w-full bg-transparent border-none text-white text-sm font-body placeholder-[#a59cba] focus:ring-0 resize-none py-3 pl-4 max-h-32" placeholder="Ask AI to manage tasks..." rows="1"></textarea>
+</div>
+<div class="flex items-center pb-1 gap-1">
+<!-- Attachment Button -->
+<button class="p-2 rounded-full text-[#a59cba] hover:text-white hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-[20px]">attach_file</span>
+</button>
+<!-- Voice Button -->
+<button class="p-2 rounded-full text-[#a59cba] hover:text-white hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-[20px]">mic</span>
+</button>
+<!-- Send Button -->
+<button class="h-10 w-10 flex items-center justify-center rounded-full bg-gradient-to-br from-[#895bf5] to-[#6c42ca] text-white shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:scale-105 transition-all duration-300 ml-1">
+<span class="material-symbols-outlined text-[20px] ml-0.5">send</span>
+</button>
+</div>
+</div>
+</div>
+<div class="text-center mt-2">
+<p class="text-[10px] text-[#a59cba]/60">AI can make mistakes. Please verify important info.</p>
+</div>
+</div>
+</div>
+</div>
+</body></html>

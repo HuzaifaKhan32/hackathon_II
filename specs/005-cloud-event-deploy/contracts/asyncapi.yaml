@@ -1,0 +1,42 @@
+asyncapi: 2.6.0
+info:
+  title: Todo App Events
+  version: 1.0.0
+  description: Asynchronous events for the Event-Driven Architecture.
+
+channels:
+  task-events:
+    publish:
+      message:
+        oneOf:
+          - $ref: '#/components/messages/TaskCompleted'
+          - $ref: '#/components/messages/TaskCreated'
+
+components:
+  messages:
+    TaskCompleted:
+      payload:
+        type: object
+        properties:
+          type:
+            type: string
+            enum: ['task.completed']
+          task_id:
+            type: string
+            format: uuid
+          recurrence:
+            type: string
+            description: ISO 8601 duration
+    TaskCreated:
+      payload:
+        type: object
+        properties:
+          type:
+            type: string
+            enum: ['task.created']
+          task_id:
+            type: string
+            format: uuid
+          priority:
+            type: string
+            enum: ['low', 'medium', 'high']

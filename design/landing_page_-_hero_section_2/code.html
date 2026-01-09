@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Todo AI - Evolution of Productivity</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#895bf5",
+                        "background-light": "#f8fafc",},
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                    animation: {
+                        'blob': 'blob 10s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 8s ease-in-out infinite 1s',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+<style>.bg-stripes {
+            background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.02) 10%, transparent 10%, transparent 50%, rgba(0, 0, 0, 0.02) 50%, rgba(0, 0, 0, 0.02) 60%, transparent 60%, transparent 100%);
+            background-size: 20px 20px;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+        }
+        .glass-button-secondary {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(6, 182, 212, 0.4);color: #0891b2;}
+        .glass-button-secondary:hover {
+            background: rgba(6, 182, 212, 0.05);
+            border-color: rgba(6, 182, 212, 0.8);
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.15);
+            transform: translateY(-2px);
+        }
+        .gradient-text-heading {
+            background: linear-gradient(to right, #7c3aed, #db2777, #ea580c);-webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .gradient-button-primary {
+            background: linear-gradient(90deg, #895bf5, #ec4899, #f97316);
+            background-size: 200% 200%;
+            animation: gradientMove 5s ease infinite;
+        }
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }.particle {
+            position: absolute;
+            border-radius: 50%;
+            background: #895bf5;opacity: 0.2;
+        }
+    </style>
+</head>
+<body class="bg-background-light font-display text-slate-900 overflow-x-hidden selection:bg-primary/20 selection:text-primary-900">
+<div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+<div class="absolute inset-0 bg-stripes"></div>
+<div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-[80px] opacity-60 animate-blob"></div>
+<div class="absolute top-[20%] right-[-10%] w-[500px] h-[500px] bg-cyan-200 rounded-full mix-blend-multiply filter blur-[100px] opacity-60 animate-blob animation-delay-2000"></div>
+<div class="absolute bottom-[-10%] left-[20%] w-[600px] h-[600px] bg-pink-200 rounded-full mix-blend-multiply filter blur-[100px] opacity-50 animate-blob animation-delay-4000"></div>
+<div class="particle w-1.5 h-1.5 top-[15%] left-[10%] animate-pulse bg-purple-500"></div>
+<div class="particle w-3 h-3 top-[35%] right-[20%] animate-pulse-slow bg-cyan-500 blur-[1px]"></div>
+<div class="particle w-2 h-2 bottom-[25%] left-[30%] animate-pulse bg-pink-500 blur-[1px]"></div>
+</div>
+<div class="relative z-10 flex flex-col min-h-screen">
+<header class="sticky top-0 z-50 w-full glass-panel border-b border-b-white/20">
+<div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+<div class="flex items-center gap-3 group cursor-pointer">
+<div class="size-10 rounded-xl bg-gradient-to-tr from-primary to-cyan-400 flex items-center justify-center text-white shadow-lg shadow-primary/25">
+<span class="material-symbols-outlined text-2xl">smart_toy</span>
+</div>
+<span class="text-xl font-bold tracking-tight text-slate-900 group-hover:text-primary transition-colors duration-300">Todo AI</span>
+</div>
+<nav class="hidden md:flex items-center gap-10">
+<a class="text-sm font-medium text-slate-600 hover:text-primary transition-colors relative group" href="#">
+                        Features
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
+</a>
+<a class="text-sm font-medium text-slate-600 hover:text-primary transition-colors relative group" href="#">
+                        Pricing
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
+</a>
+<a class="text-sm font-medium text-slate-600 hover:text-primary transition-colors relative group" href="#">
+                        About
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
+</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="hidden md:block text-sm font-medium text-slate-700 hover:text-primary transition-colors">Login</button>
+<button class="flex items-center justify-center rounded-full h-10 px-6 bg-slate-900 text-white text-sm font-bold hover:bg-slate-800 transition-colors shadow-lg shadow-slate-900/10">
+                        Sign Up
+                    </button>
+<button class="md:hidden text-slate-800">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-grow flex items-center justify-center relative px-6 py-12 lg:py-0">
+<div class="max-w-7xl w-full mx-auto grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+<div class="flex flex-col items-center lg:items-start text-center lg:text-left space-y-8 z-10">
+<div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-white/60 shadow-sm hover:shadow-md transition-all cursor-default">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+</span>
+<span class="text-xs font-bold tracking-wide text-slate-600 uppercase">v2.0 AI Engine Live</span>
+</div>
+<div class="space-y-4">
+<h1 class="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] tracking-tight">
+<span class="block text-slate-900">Evolution of</span>
+<span class="block gradient-text-heading pb-2">Todo Management</span>
+</h1>
+<p class="text-lg md:text-xl text-slate-600 max-w-[600px] lg:max-w-none leading-relaxed font-medium">
+                            AI-Powered task management that never sleeps. Experience the future of productivity with a chatbot that anticipates your needs before you do.
+                        </p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto pt-4">
+<button class="group relative flex items-center justify-center gap-2 h-14 px-8 rounded-full gradient-button-primary text-white font-bold text-base shadow-xl shadow-primary/30 hover:shadow-primary/50 hover:-translate-y-1 transition-all duration-300 w-full sm:w-auto">
+<span>Get Started</span>
+<span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+<button class="flex items-center justify-center gap-2 h-14 px-8 rounded-full glass-button-secondary font-bold text-base transition-all duration-300 w-full sm:w-auto">
+<span class="material-symbols-outlined text-cyan-500">play_circle</span>
+<span>Watch Demo</span>
+</button>
+</div>
+<div class="pt-8 flex flex-col gap-3">
+<p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Trusted by teams at</p>
+<div class="flex items-center gap-6 opacity-40 grayscale">
+<span class="text-lg font-bold font-sans tracking-tight text-slate-800">ACME</span>
+<span class="text-lg font-black font-serif italic text-slate-800">Globex</span>
+<div class="flex items-center gap-1"><div class="size-4 rounded-full bg-slate-800"></div><span class="font-bold text-slate-800">Soylent</span></div>
+</div>
+</div>
+</div>
+<div class="relative flex justify-center lg:justify-end items-center h-[500px] lg:h-[700px] w-full perspective-1000">
+<div class="absolute inset-0 bg-gradient-to-tr from-purple-200/50 to-cyan-200/50 rounded-full filter blur-[60px] animate-pulse-slow"></div>
+<div class="relative w-full max-w-[500px] aspect-square animate-float z-10">
+<div class="absolute inset-0 bg-gradient-to-br from-white/40 to-white/10 rounded-3xl backdrop-blur-sm border border-white/60 transform rotate-6 shadow-2xl shadow-purple-500/5"></div>
+<div class="absolute inset-0 bg-white/90 rounded-3xl transform -rotate-3 border border-white/80 overflow-hidden shadow-2xl shadow-slate-400/20 flex flex-col">
+<div class="p-4 border-b border-slate-100 flex items-center gap-3 bg-slate-50/50">
+<div class="size-3 rounded-full bg-red-400"></div>
+<div class="size-3 rounded-full bg-yellow-400"></div>
+<div class="size-3 rounded-full bg-green-400"></div>
+<div class="ml-auto text-xs text-slate-400 font-semibold">AI Assistant</div>
+</div>
+<div class="p-6 space-y-4 flex-1 overflow-hidden relative">
+<div class="flex gap-3">
+<div class="size-8 rounded-full bg-gradient-to-br from-primary to-purple-600 flex-shrink-0"></div>
+<div class="bg-slate-100 p-3 rounded-2xl rounded-tl-none text-sm text-slate-700 max-w-[80%] font-medium">
+                                        Analyzing your schedule for next week...
+                                    </div>
+</div>
+<div class="flex gap-3">
+<div class="size-8 rounded-full bg-gradient-to-br from-primary to-purple-600 flex-shrink-0 animate-pulse"></div>
+<div class="bg-slate-100 p-3 rounded-2xl rounded-tl-none text-sm text-slate-700 max-w-[80%] font-medium">
+                                        I found 3 conflicts. Should I reschedule your "Product Sync"?
+                                    </div>
+</div>
+<div class="flex gap-3 justify-end mt-4">
+<div class="bg-primary p-3 rounded-2xl rounded-tr-none text-sm text-white max-w-[80%] shadow-lg shadow-primary/20 font-medium">
+                                        Yes, move it to Friday afternoon.
+                                    </div>
+</div>
+<img class="absolute -bottom-10 -right-10 w-48 h-48 object-cover rounded-full border-[6px] border-white shadow-2xl animate-float-delayed" data-alt="Abstract 3D glass shape representing AI processing" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAw_N8W2SeFkrUT2k72dfO1KtjwszYGFEZ4IRIonCYMly-dxeSecu1BSqma7FH9rsdqlI24_VOec0QqcMK8bX9Irp-m8q2WB_hzXlOS-PByQeybiFrDRPMMo7i7sgGprNrkTItojp99xBdqxmMXwLMdIftK-BCtR-s0ZFim1Lg7tXgeK2VUvU7ef52QZduQaLKp8spfkKvYkz-rpI0YZx8uIkyf7AdTk0PLrmet1E64BwMciRQ7MgI0xovZwXlRtT1cjjFO5R9HJtMl"/>
+</div>
+</div>
+</div>
+<div class="absolute top-[10%] left-[10%] p-3 glass-panel rounded-2xl animate-float-delayed flex items-center gap-2 shadow-xl shadow-slate-200/50">
+<span class="material-symbols-outlined text-green-500">check_circle</span>
+<span class="text-sm font-bold text-slate-800">Task Complete</span>
+</div>
+<div class="absolute bottom-[20%] right-[-5%] lg:right-[10%] p-3 glass-panel rounded-2xl animate-float flex items-center gap-2 shadow-xl shadow-slate-200/50 z-20">
+<span class="material-symbols-outlined text-yellow-500">bolt</span>
+<span class="text-sm font-bold text-slate-800">Efficiency +240%</span>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>

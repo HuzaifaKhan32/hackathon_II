@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Add Task Modal</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#520ef1",
+                        "primary-light": "#7b46f5",
+                        "accent-pink": "#ec4899",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#131118",
+                        "surface-dark": "#1e1a29",
+                        "border-dark": "#2d2839",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "1.5rem", "xl": "2rem", "2xl": "2.5rem", "full": "9999px"},
+                    backgroundImage: {
+                        'gradient-border': 'linear-gradient(to bottom right, #520ef1, #ec4899)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for textarea */
+        textarea::-webkit-scrollbar {
+            width: 8px;
+        }
+        textarea::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 4px;
+        }
+        textarea::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        textarea::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .glass-panel {
+            background: rgba(19, 17, 24, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #ffffff, #a59cba);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gradient-border-mask {
+            position: relative;
+            background: #131118;
+            background-clip: padding-box;
+            border: 1px solid transparent;
+            border-radius: 2rem;
+        }
+        .gradient-border-mask::before {
+            content: "";
+            position: absolute;
+            top: 0; right: 0; bottom: 0; left: 0;
+            z-index: -1;
+            margin: -1px;
+            border-radius: inherit;
+            background: linear-gradient(135deg, rgba(82,14,241,0.5), rgba(236,72,153,0.5));
+        }
+    </style>
+</head>
+<body class="font-display bg-background-dark text-white overflow-hidden selection:bg-primary selection:text-white">
+<!-- BACKGROUND LAYOUT (Blurred Context) -->
+<div aria-hidden="true" class="absolute inset-0 flex h-screen w-full overflow-hidden blur-[6px] opacity-40 pointer-events-none select-none">
+<!-- Side Nav Simulation -->
+<div class="hidden md:flex w-72 flex-col justify-between border-r border-[#2d2839] bg-[#131118] p-6">
+<div class="flex flex-col gap-8">
+<div class="flex gap-3 items-center">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10" data-alt="App logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBJ4WHfde_SONjJfh4DEtwMj0MucmRoHU2IbaocI6BSdyh10WE_Tr-kBLagXkkcj5Xz8Y9N9qaO7WjHF-0CcR8HaurdETWv5S3fRHY_UMOfzY1WiH01I69iZaAGgfvv7waxWKrLhKqTzuY_qdFuHERqRzXfH8NrfSpEEtOAuFDc-v0Y6KOWXNByPodl9owA4xSDflqLnTgCPit4PxyFEZ-rMnPEL9jFEQ_5K0wgl6e1qUhtbNirfKX_2WGi7pY2HeL79wIcgWnbJvFf");'></div>
+<div>
+<h1 class="text-white text-lg font-bold">Todo AI</h1>
+<p class="text-[#a59cba] text-xs">Pro Workspace</p>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#2d2839] text-white">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-medium">Dashboard</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl text-[#a59cba]">
+<span class="material-symbols-outlined">check_circle</span>
+<span>My Tasks</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Content Simulation -->
+<div class="flex-1 flex flex-col bg-[#131118]">
+<header class="flex items-center justify-between px-10 py-6 border-b border-[#2d2839]">
+<h2 class="text-2xl font-bold">My Tasks</h2>
+<div class="size-10 rounded-full bg-cover bg-center" data-alt="User avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC6pwAsyUlVAL_0kW4uKd41vSXOOs-Mb01EYKvin6DfQZIckKMPORLROoIpwnn3NgGyxa41mnkq1q1m8e7ns8RspZBPOuYq-XhTIIAgTPjbqtQRsY7eVzbvl7BM29upDynnNDYIIgG0KXses_FseDPGweQsl9qVwViTdgg8DhkJ3p9NqJy4Aazn4gKC_D93a439jXQVQ6cxkjREfKkOWoLHGz1QWaM8vyeKivbmgfVHXDEQnsYkZUk4GpcIR6AogMpRceWILHQOpXFb");'></div>
+</header>
+<div class="p-10 grid grid-cols-1 gap-6">
+<div class="h-32 rounded-2xl bg-[#1e1a29] border border-[#2d2839]"></div>
+<div class="h-32 rounded-2xl bg-[#1e1a29] border border-[#2d2839]"></div>
+<div class="h-32 rounded-2xl bg-[#1e1a29] border border-[#2d2839]"></div>
+</div>
+</div>
+</div>
+<!-- MODAL OVERLAY -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity duration-300">
+<!-- MODAL CONTAINER -->
+<!-- Using a gradient ring wrapper for the border effect -->
+<div class="group relative w-full max-w-2xl transform transition-all duration-300 scale-100 opacity-100">
+<!-- Glow Effect behind -->
+<div class="absolute -inset-1 bg-gradient-to-r from-primary via-purple-600 to-accent-pink rounded-[2.2rem] opacity-30 blur-xl group-hover:opacity-50 transition duration-1000"></div>
+<!-- Main Card -->
+<div class="relative flex flex-col w-full bg-[#131118]/90 backdrop-blur-xl rounded-[2rem] border border-white/10 shadow-2xl overflow-hidden">
+<!-- HEADER -->
+<div class="flex items-center justify-between px-8 py-6 border-b border-white/5 bg-gradient-to-r from-white/5 to-transparent">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center size-10 rounded-full bg-primary/20 text-primary">
+<span class="material-symbols-outlined filled">add_task</span>
+</div>
+<h2 class="text-2xl font-bold text-white tracking-tight">
+<span class="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-[#a59cba]">Create New Task</span>
+</h2>
+</div>
+<button class="flex items-center justify-center size-10 rounded-full hover:bg-white/10 text-[#a59cba] hover:text-white transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- SCROLLABLE BODY -->
+<div class="p-8 space-y-8 overflow-y-auto max-h-[70vh]">
+<!-- TASK TITLE -->
+<div class="space-y-3">
+<label class="block text-sm font-medium text-[#a59cba] ml-1">Task Title</label>
+<div class="relative group/input">
+<input class="w-full bg-[#1e1a29] text-white placeholder-[#585366] text-lg px-6 py-4 rounded-2xl border border-[#2d2839] focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all shadow-inner" placeholder="What needs to be done?" type="text" value=""/>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 text-primary opacity-0 group-focus-within/input:opacity-100 transition-opacity pointer-events-none">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</div>
+</div>
+</div>
+<!-- META ROW (Date & Priority) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Date Picker -->
+<div class="space-y-3">
+<label class="block text-sm font-medium text-[#a59cba] ml-1">Due Date</label>
+<div class="relative">
+<button class="flex items-center w-full bg-[#1e1a29] hover:bg-[#252033] text-white px-5 py-3.5 rounded-xl border border-[#2d2839] transition-colors text-left group">
+<span class="material-symbols-outlined text-[#a59cba] mr-3 group-hover:text-primary transition-colors">calendar_today</span>
+<span class="text-base">Tomorrow, 10:00 AM</span>
+<span class="material-symbols-outlined text-[#a59cba] ml-auto text-sm">expand_more</span>
+</button>
+</div>
+</div>
+<!-- Priority Selector -->
+<div class="space-y-3">
+<label class="block text-sm font-medium text-[#a59cba] ml-1">Priority</label>
+<div class="flex bg-[#1e1a29] p-1.5 rounded-xl border border-[#2d2839]">
+<button class="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-sm font-medium text-[#a59cba] hover:text-white hover:bg-white/5 transition-all">
+                                    Low
+                                </button>
+<button class="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-sm font-medium text-[#a59cba] hover:text-white hover:bg-white/5 transition-all">
+                                    Medium
+                                </button>
+<button class="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-sm font-bold text-white bg-gradient-to-r from-orange-600 to-red-500 shadow-lg shadow-orange-900/20 transition-all">
+<span class="material-symbols-outlined text-[18px] filled">flag</span>
+                                    High
+                                </button>
+</div>
+</div>
+</div>
+<!-- DESCRIPTION -->
+<div class="space-y-3">
+<div class="flex justify-between items-end">
+<label class="block text-sm font-medium text-[#a59cba] ml-1">Description</label>
+<button class="flex items-center gap-1.5 text-xs font-medium text-primary hover:text-primary-light transition-colors px-2 py-1 rounded-full hover:bg-primary/10">
+<span class="material-symbols-outlined text-[16px]">auto_awesome</span>
+                                AI Generate
+                            </button>
+</div>
+<textarea class="w-full bg-[#1e1a29] text-white placeholder-[#585366] text-base px-6 py-4 rounded-2xl border border-[#2d2839] focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none resize-none transition-all" placeholder="Add details, subtasks, or paste links..." rows="4"></textarea>
+</div>
+<!-- TAGS & TOGGLES -->
+<div class="flex flex-col md:flex-row gap-6 md:items-start justify-between">
+<!-- Tags Input -->
+<div class="flex-1 space-y-3">
+<label class="block text-sm font-medium text-[#a59cba] ml-1">Tags</label>
+<div class="flex flex-wrap items-center gap-2 p-3 rounded-2xl border border-[#2d2839] bg-[#1e1a29] min-h-[56px]">
+<!-- Tag 1 -->
+<div class="flex items-center gap-1 pl-3 pr-2 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-medium">
+<span>Product</span>
+<button class="hover:text-white transition-colors"><span class="material-symbols-outlined text-[14px]">close</span></button>
+</div>
+<!-- Tag 2 -->
+<div class="flex items-center gap-1 pl-3 pr-2 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-300 text-xs font-medium">
+<span>Urgent</span>
+<button class="hover:text-white transition-colors"><span class="material-symbols-outlined text-[14px]">close</span></button>
+</div>
+<input class="bg-transparent border-none focus:ring-0 text-sm text-white placeholder-[#585366] min-w-[80px] p-0 ml-1" placeholder="+ Add tag" type="text"/>
+</div>
+</div>
+<!-- Options -->
+<div class="md:w-auto w-full space-y-3">
+<label class="block text-sm font-medium text-[#a59cba] ml-1 md:text-right">Options</label>
+<div class="flex flex-col gap-3">
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="relative inline-flex items-center h-6 rounded-full w-11 transition-colors focus:outline-none bg-[#2d2839] group-hover:bg-[#383247]">
+<span class="translate-x-6 inline-block w-4 h-4 transform bg-primary rounded-full transition-transform"></span>
+</div>
+<span class="text-sm text-white group-hover:text-white/80">Remind me</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="relative inline-flex items-center h-6 rounded-full w-11 transition-colors focus:outline-none bg-[#2d2839] group-hover:bg-[#383247]">
+<span class="translate-x-1 inline-block w-4 h-4 transform bg-[#a59cba] rounded-full transition-transform"></span>
+</div>
+<span class="text-sm text-[#a59cba] group-hover:text-white/80">Recurring</span>
+</label>
+</div>
+</div>
+</div>
+</div>
+<!-- FOOTER -->
+<div class="flex items-center justify-end gap-4 px-8 py-6 bg-[#1e1a29]/50 border-t border-white/5 backdrop-blur-md">
+<button class="px-6 py-2.5 rounded-full text-sm font-bold text-white hover:bg-white/5 transition-colors">
+                        Cancel
+                    </button>
+<button class="group relative px-8 py-2.5 rounded-full text-sm font-bold text-white overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/25">
+<div class="absolute inset-0 bg-gradient-to-r from-primary via-purple-600 to-accent-pink transition-transform group-hover:scale-110"></div>
+<div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<span class="relative flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">check</span>
+                            Create Task
+                        </span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</body></html>
