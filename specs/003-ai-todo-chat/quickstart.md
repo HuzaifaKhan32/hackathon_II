@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- **Gemini API Key**: Get from Google AI Studio. Set `GEMINI_API_KEY` in `.env`.
+- **Gemini API Key**: Get from Google AI Studio. Set `API_KEY` in `.env`.
 - **Phase II**: Functional Auth and DB.
 
 ## Setup
@@ -10,7 +10,7 @@
 1. **Environment Variables**
    Add to `backend/.env`:
    ```env
-   GEMINI_API_KEY="AIzaSy..."
+   API_KEY="AIzaSy..."
    ```
 
 2. **Database Migration**

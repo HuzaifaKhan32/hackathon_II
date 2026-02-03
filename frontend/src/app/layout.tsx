@@ -3,8 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css"; // Ensure this is imported first
 import { AuthProvider } from "@/context/AuthContext";
 import { Providers } from "@/app/providers";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
 
 // Use next/font for Google Fonts for better performance and self-hosting
 import { Space_Grotesk, Noto_Sans } from 'next/font/google';
@@ -66,9 +64,7 @@ export default function RootLayout({
               <div className="particle w-1.5 h-1.5 bottom-[25%] left-[30%] animate-pulse bg-pink-400 blur-[1px]"></div>
             </div>
             <div className="relative z-10 flex flex-col min-h-screen">
-              <Navbar />
               {children}
-              <Footer />
             </div>
           </AuthProvider>
         </Providers>

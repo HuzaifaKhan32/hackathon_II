@@ -1,26 +1,44 @@
 // frontend/src/components/modals/EditTaskModal.tsx
 import React, { useState } from 'react';
 
+interface Task {
+  title?: string;
+  description?: string;
+  [key: string]: unknown;
+}
+
 interface EditTaskModalProps {
   isOpen: boolean;
   onClose: () => void;
+  task?: Task | null;
+  onSave?: (data: unknown) => void;
 }
 
-const EditTaskModal: React.FC<EditTaskModalProps> = ({ isOpen, onClose }) => {
-  if (!isOpen) return null;
-
+const EditTaskModal: React.FC<EditTaskModalProps> = ({ isOpen, onClose, task, onSave }) => {
   // State for form fields (basic example)
-  const [taskTitle, setTaskTitle] = useState('');
-  const [dueDate, setDueDate] = useState('Tomorrow, 10:00 AM');
+  const [taskTitle, setTaskTitle] = useState(task?.title || '');
+  const [dueDate] = useState('Tomorrow, 10:00 AM');
   const [priority, setPriority] = useState('High');
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState(task?.description || '');
   const [tags, setTags] = useState(['Product', 'Urgent']);
   const [newTag, setNewTag] = useState('');
-  const [remindMe, setRemindMe] = useState(true);
-  const [recurring, setRecurring] = useState(false);
+  const [remindMe] = useState(true);
+  const [recurring] = useState(false);
+
+  if (!isOpen) return null;
 
   const handleAddTask = () => {
-    console.log({ taskTitle, dueDate, priority, description, tags, remindMe, recurring });
+    if (onSave) {
+        onSave({ 
+            title: taskTitle, 
+            description, 
+            dueDate,
+            priority,
+            tags,
+            remindMe,
+            recurring
+        });
+    }
     onClose();
   };
 

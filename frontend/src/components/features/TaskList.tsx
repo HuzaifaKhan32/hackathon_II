@@ -13,6 +13,12 @@ interface Task {
   created_at: string;
 }
 
+interface TaskData {
+  title: string;
+  description?: string;
+  is_completed: boolean;
+}
+
 export default function TaskList() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
@@ -30,7 +36,7 @@ export default function TaskList() {
       setLoading(true);
       const response = await api.get('/tasks/');
       setTasks(response.data);
-    } catch (err) {
+    } catch (err: unknown) {
       setError('Failed to load tasks');
       console.error(err);
     } finally {
@@ -53,12 +59,12 @@ export default function TaskList() {
     try {
         await api.delete(`/tasks/${id}`);
         fetchTasks();
-    } catch (err) {
+    } catch (err: unknown) {
         console.error('Failed to delete', err);
     }
   };
 
-  const handleSave = async (data: any) => {
+  const handleSave = async (data: TaskData) => {
     if (editingTask) {
         await api.put(`/tasks/${editingTask.id}`, data);
     } else {

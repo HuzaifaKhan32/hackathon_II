@@ -11,8 +11,8 @@ from alembic import context
 # Add current directory to path so we can import src
 sys.path.append(os.getcwd())
 
-from src.core.config import settings
-from src.models import * # Import models to register them
+from app.config import settings
+from app.models import *
 
 config = context.config
 
@@ -22,7 +22,7 @@ if config.config_file_name is not None:
 target_metadata = SQLModel.metadata
 
 def get_url():
-    return str(settings.SQLALCHEMY_DATABASE_URI)
+    return str(settings.database_url)
 
 def run_migrations_offline() -> None:
     url = get_url()

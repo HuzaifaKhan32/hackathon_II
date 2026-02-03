@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import Link from 'next/link';
 
 const HeroSection = () => {
     return (
@@ -73,7 +72,7 @@ const HeroSection = () => {
                                 <div className="flex gap-3">
                                     <div className="size-8 rounded-full bg-gradient-to-br from-primary to-purple-800 flex-shrink-0 animate-pulse"></div>
                                     <div className="bg-white/10 p-3 rounded-2xl rounded-tl-none text-sm text-gray-200 max-w-[80%]">
-                                        I found 3 conflicts. Should I reschedule your "Product Sync"?
+                                        I found 3 conflicts. Should I reschedule your &quot;Product Sync&quot;?
                                     </div>
                                 </div>
                                 <div className="flex gap-3 justify-end mt-4">

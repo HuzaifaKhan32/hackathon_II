@@ -1,0 +1,14 @@
+INFO:     127.0.0.1:60287 - "OPTIONS /api/v1/users/open HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60287 - "POST /api/v1/users/open HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56131 - "OPTIONS /api/v1/users/open HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56131 - "POST /api/v1/users/open HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51211 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51211 - "GET /api/v1/openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49377 - "OPTIONS /api/v1/signup HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49377 - "POST /api/v1/signup HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:51404 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62060 - "OPTIONS /api/v1/signup HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62060 - "POST /api/v1/signup HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:49811 - "OPTIONS /api/v1/signup HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49811 - "POST /api/v1/signup HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:49672 - "POST /api/v1/signup HTTP/1.1" 500 Internal Server Error

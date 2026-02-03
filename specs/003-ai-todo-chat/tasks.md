@@ -8,28 +8,28 @@
 ## Phase 1: Setup
 **Goal**: Initialize environment and dependencies for AI integration.
 
-- [ ] T001 Install Google Generative AI SDK in backend `backend/pyproject.toml`
-- [ ] T002 Install Vercel AI SDK (or equivalent fetch wrappers) in frontend `frontend/package.json`
-- [ ] T003 Configure Gemini API Key environment variable in `backend/.env` and `backend/src/core/config.py`
+- [x] T001 Install Google Generative AI SDK in backend `backend/pyproject.toml`
+- [x] T002 Install Vercel AI SDK (or equivalent fetch wrappers) in frontend `frontend/package.json`
+- [x] T003 Configure Gemini API Key environment variable in `backend/.env` and `backend/src/core/config.py`
 
 ## Phase 2: Foundations
 **Goal**: Establish data models, database tables, and core AI service structure.
 **Independent Test**: Database tables created; Gemini client can successfully authenticate (basic "hello world" script).
 
-- [ ] T004 Create Conversation and Message SQLModel classes in `backend/src/models/chat.py`
-- [ ] T005 [P] Generate and apply Alembic migration for new chat tables `backend/alembic/versions/`
-- [ ] T006 Initialize Gemini client wrapper with system instructions in `backend/src/services/llm/gemini.py`
-- [ ] T007 Define MCP tool schemas (Pydantic definitions) for add, list, update, delete, complete in `backend/src/services/llm/tools.py`
+- [x] T004 Create Conversation and Message SQLModel classes in `backend/src/models/chat.py`
+- [x] T005 [P] Generate and apply Alembic migration for new chat tables `backend/alembic/versions/`
+- [x] T006 Initialize Gemini client wrapper with system instructions in `backend/src/services/llm/gemini.py`
+- [x] T007 Define MCP tool schemas (Pydantic definitions) for add, list, update, delete, complete in `backend/src/services/llm/tools.py`
 
 ## Phase 3: Natural Language Task Creation (US1)
 **Goal**: Enable users to add tasks via chat. Establishes the full end-to-end chat loop.
 **Independent Test**: Sending "Add task Buy Milk" creates a task in the DB and returns a confirmation message.
 
-- [ ] T008 [US1] Implement `add_task` tool logic (DB interaction) in `backend/src/services/llm/tools.py`
-- [ ] T009 [US1] Implement `ChatService` to orchestrate Gemini calls and tool execution in `backend/src/services/chat_service.py`
-- [ ] T010 [US1] Create POST /chat/message endpoint in `backend/src/api/v1/endpoints/chat.py`
-- [ ] T011 [P] [US1] Create chat client API wrapper in `frontend/src/lib/chat.ts`
-- [ ] T012 [P] [US1] Implement Chat UI components (Input, Panel, Message bubble) in `frontend/src/components/features/ChatPanel.tsx`
+- [x] T008 [US1] Implement `add_task` tool logic (DB interaction) in `backend/src/services/llm/tools.py`
+- [x] T009 [US1] Implement `ChatService` to orchestrate Gemini calls and tool execution in `backend/src/services/chat_service.py`
+- [x] T010 [US1] Create POST /chat/message endpoint in `backend/src/api/v1/endpoints/chat.py`
+- [x] T011 [P] [US1] Create chat client API wrapper in `frontend/src/lib/chat.ts`
+- [x] T012 [P] [US1] Implement Chat UI components (Input, Panel, Message bubble) in `frontend/src/components/features/ChatPanel.tsx`
 
 ## Phase 4: Task Listing & Status (US2)
 **Goal**: Allow users to query their tasks.

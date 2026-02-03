@@ -1,10 +1,101 @@
 "use client";
 
-interface TaskListProps {
-  onAddTask?: () => void;
+import { useEffect, useState } from 'react';
+import { api } from '@/lib/api';
+import { toast } from 'sonner';
+import { AnimatePresence } from 'framer-motion';
+import TaskItem from './TaskItem';
+
+interface Task {
+  id: string;
+  title: string;
+  description?: string;
+  is_completed: boolean;
+  created_at: string;
+  priority?: 'High' | 'Medium' | 'Low';
+  tags?: string[];
 }
 
-export default function TaskList({ onAddTask }: TaskListProps) {
+interface TaskListProps {
+  onAddTask?: () => void;
+  filter?: 'all' | 'today' | 'upcoming';
+}
+
+export default function TaskList({ onAddTask, filter = 'all' }: TaskListProps) {
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchTasks = async () => {
+    try {
+      setLoading(true);
+      const response = await api.get('/tasks/');
+      let fetchedTasks: Task[] = response.data.map((task: Task, index: number) => ({
+        ...task,
+        priority: index % 3 === 0 ? 'High' : index % 2 === 0 ? 'Medium' : 'Low',
+        tags: index % 4 === 0 ? ['frontend', 'bug'] : index % 3 === 0 ? ['backend', 'feature'] : ['docs'],
+      }));
+
+      // Client-side filtering
+      if (filter === 'today') {
+        const today = new Date().toISOString().split('T')[0];
+        fetchedTasks = fetchedTasks.filter(task => task.created_at.startsWith(today));
+      } else if (filter === 'upcoming') {
+        // Since we don't have due_date, we'll treat 'upcoming' as pending tasks for now
+        fetchedTasks = fetchedTasks.filter(task => !task.is_completed);
+      }
+
+      setTasks(fetchedTasks);
+    } catch (error) {
+      console.error("Failed to fetch tasks", error);
+      toast.error("Failed to fetch tasks");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTasks();
+  }, [filter]);
+
+  const handleDelete = async (id: string) => {
+    try {
+        // Optimistically remove the task from the UI
+        const originalTasks = tasks;
+        setTasks(tasks.filter(t => t.id !== id));
+        toast.success("Task deleted");
+        await api.delete(`/tasks/${id}`);
+    } catch (error) {
+        console.error("Failed to delete task", error);
+        toast.error("Failed to delete task");
+        // Revert on error
+        fetchTasks();
+    }
+  }
+
+  const handleToggleComplete = async (task: Task) => {
+      try {
+          const updatedTask = { ...task, is_completed: !task.is_completed };
+          // Optimistic update
+          setTasks(tasks.map(t => t.id === task.id ? updatedTask : t));
+          
+          await api.put(`/tasks/${task.id}`, { is_completed: updatedTask.is_completed });
+          toast.success(updatedTask.is_completed ? "Task completed" : "Task marked active");
+      } catch (error) {
+          console.error("Failed to update task", error);
+          toast.error("Failed to update task");
+          // Revert on error
+          fetchTasks(); 
+      }
+  }
+
+  const getTitle = () => {
+      switch(filter) {
+          case 'today': return "Today's Tasks";
+          case 'upcoming': return "Upcoming Tasks";
+          default: return "All Tasks";
+      }
+  }
+
   return (
     <div className="flex-1 h-full overflow-y-auto relative bg-[#0f0f12] text-white font-display">
       {/* Background ambient glows */}
@@ -19,7 +110,7 @@ export default function TaskList({ onAddTask }: TaskListProps) {
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
               <div className="flex flex-col gap-1">
                 <h1 className="text-5xl font-bold tracking-tight bg-gradient-to-r from-white via-white to-gray-500 bg-clip-text text-transparent drop-shadow-sm">
-                  All Tasks
+                  {getTitle()}
                 </h1>
                 <p className="text-gray-400 text-base font-normal flex items-center gap-2">
                   <span className="material-symbols-outlined text-primary text-[18px]">auto_awesome</span>
@@ -63,6 +154,9 @@ export default function TaskList({ onAddTask }: TaskListProps) {
                 
                 {/* Action Buttons */}
                 <div className="flex items-center gap-3 w-full md:w-auto justify-end">
+                  <button onClick={fetchTasks} aria-label="Refresh" className="flex items-center justify-center size-10 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-gray-300 hover:text-white transition-colors">
+                    <span className="material-symbols-outlined text-[20px]">refresh</span>
+                  </button>
                   <button aria-label="Filter" className="flex items-center justify-center size-10 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-gray-300 hover:text-white transition-colors">
                     <span className="material-symbols-outlined text-[20px]">filter_list</span>
                   </button>
@@ -72,132 +166,24 @@ export default function TaskList({ onAddTask }: TaskListProps) {
                 </div>
               </div>
 
-              {/* AI Suggestion Pill */}
-              <div className="flex items-center gap-3 py-2 px-4 rounded-xl bg-primary/10 border border-primary/20 self-start animate-pulse">
-                <span className="material-symbols-outlined text-primary text-[18px]">lightbulb</span>
-                <p className="text-sm text-primary/90 font-medium">Suggestion: Focus on <span className="text-white underline decoration-primary/50 underline-offset-2">Review Q3 Analytics</span> first based on your deadline patterns.</p>
-              </div>
-
               {/* Tasks List */}
               <div className="flex flex-col gap-3 mt-2">
-                
-                {/* Task 1: High Priority */}
-                <div className="glass-item group relative flex items-center gap-4 p-4 rounded-2xl cursor-pointer">
-                  {/* Priority Strip */}
-                  <div className="absolute left-0 top-3 bottom-3 w-1 rounded-r-full bg-gradient-to-b from-[#ff4b91] to-[#ff9068] shadow-[0_0_10px_rgba(255,75,145,0.5)]"></div>
-                  <div className="pl-3 flex items-center">
-                    <input className="custom-checkbox size-6 rounded-full border-2 border-gray-600 bg-transparent text-primary focus:ring-0 focus:ring-offset-0 transition-colors cursor-pointer appearance-none checked:bg-primary checked:border-transparent" type="checkbox"/>
-                  </div>
-                  <div className="flex flex-col flex-1 min-w-0">
-                    <h3 className="text-base font-medium text-white truncate group-hover:text-primary transition-colors">Review Q3 AI Analytics</h3>
-                    <div className="flex items-center gap-3 mt-1 text-xs text-gray-400">
-                      <span className="flex items-center gap-1 text-red-400 font-medium bg-red-400/10 px-2 py-0.5 rounded-full">
-                        <span className="material-symbols-outlined text-[14px]">calendar_today</span>
-                        Due Today
-                      </span>
-                      <span className="hidden sm:inline">•</span>
-                      <span className="hidden sm:inline">Project Alpha</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="hidden sm:flex px-3 py-1 rounded-full text-xs font-medium bg-white/5 border border-white/5 text-gray-300">#Work</span>
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 pl-2 border-l border-white/10">
-                      <button className="size-8 flex items-center justify-center rounded-full hover:bg-white/10 text-gray-400 hover:text-white">
-                        <span className="material-symbols-outlined text-[18px]">edit</span>
-                      </button>
-                      <button className="size-8 flex items-center justify-center rounded-full hover:bg-red-500/20 text-gray-400 hover:text-red-400">
-                        <span className="material-symbols-outlined text-[18px]">delete</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Task 2: Medium Priority */}
-                <div className="glass-item group relative flex items-center gap-4 p-4 rounded-2xl cursor-pointer">
-                  {/* Priority Strip */}
-                  <div className="absolute left-0 top-3 bottom-3 w-1 rounded-r-full bg-gradient-to-b from-[#895bf5] to-[#00d4ff]"></div>
-                  <div className="pl-3 flex items-center">
-                    <input className="custom-checkbox size-6 rounded-full border-2 border-gray-600 bg-transparent text-primary focus:ring-0 focus:ring-offset-0 transition-colors cursor-pointer appearance-none checked:bg-primary checked:border-transparent" type="checkbox"/>
-                  </div>
-                  <div className="flex flex-col flex-1 min-w-0">
-                    <h3 className="text-base font-medium text-white truncate group-hover:text-primary transition-colors">Update Neural Network Weights</h3>
-                    <div className="flex items-center gap-3 mt-1 text-xs text-gray-400">
-                      <span className="flex items-center gap-1 text-blue-400 font-medium bg-blue-400/10 px-2 py-0.5 rounded-full">
-                        <span className="material-symbols-outlined text-[14px]">schedule</span>
-                        Tomorrow
-                      </span>
-                      <span className="hidden sm:inline">•</span>
-                      <span className="hidden sm:inline">Model V2</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="hidden sm:flex px-3 py-1 rounded-full text-xs font-medium bg-white/5 border border-white/5 text-gray-300">#Dev</span>
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 pl-2 border-l border-white/10">
-                      <button className="size-8 flex items-center justify-center rounded-full hover:bg-white/10 text-gray-400 hover:text-white">
-                        <span className="material-symbols-outlined text-[18px]">edit</span>
-                      </button>
-                      <button className="size-8 flex items-center justify-center rounded-full hover:bg-red-500/20 text-gray-400 hover:text-red-400">
-                        <span className="material-symbols-outlined text-[18px]">delete</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Task 3: Low Priority */}
-                <div className="glass-item group relative flex items-center gap-4 p-4 rounded-2xl cursor-pointer opacity-90 hover:opacity-100">
-                  {/* Priority Strip */}
-                  <div className="absolute left-0 top-3 bottom-3 w-1 rounded-r-full bg-gradient-to-b from-[#00f260] to-[#0575e6]"></div>
-                  <div className="pl-3 flex items-center">
-                    <input className="custom-checkbox size-6 rounded-full border-2 border-gray-600 bg-transparent text-primary focus:ring-0 focus:ring-offset-0 transition-colors cursor-pointer appearance-none checked:bg-primary checked:border-transparent" type="checkbox"/>
-                  </div>
-                  <div className="flex flex-col flex-1 min-w-0">
-                    <h3 className="text-base font-medium text-white truncate group-hover:text-primary transition-colors">Brainstorm Interface Ideas</h3>
-                    <div className="flex items-center gap-3 mt-1 text-xs text-gray-400">
-                      <span className="flex items-center gap-1 text-green-400 font-medium bg-green-400/10 px-2 py-0.5 rounded-full">
-                        <span className="material-symbols-outlined text-[14px]">event_upcoming</span>
-                        Friday
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="hidden sm:flex px-3 py-1 rounded-full text-xs font-medium bg-white/5 border border-white/5 text-gray-300">#Design</span>
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 pl-2 border-l border-white/10">
-                      <button className="size-8 flex items-center justify-center rounded-full hover:bg-white/10 text-gray-400 hover:text-white">
-                        <span className="material-symbols-outlined text-[18px]">edit</span>
-                      </button>
-                      <button className="size-8 flex items-center justify-center rounded-full hover:bg-red-500/20 text-gray-400 hover:text-red-400">
-                        <span className="material-symbols-outlined text-[18px]">delete</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Task 4: Completed Example */}
-                <div className="glass-item group relative flex items-center gap-4 p-4 rounded-2xl cursor-pointer opacity-50 hover:opacity-80">
-                  {/* Priority Strip (Gray for done) */}
-                  <div className="absolute left-0 top-3 bottom-3 w-1 rounded-r-full bg-gray-600"></div>
-                  <div className="pl-3 flex items-center">
-                    <input defaultChecked className="custom-checkbox size-6 rounded-full border-2 border-gray-600 bg-transparent text-primary focus:ring-0 focus:ring-offset-0 transition-colors cursor-pointer appearance-none checked:bg-primary checked:border-transparent" type="checkbox"/>
-                  </div>
-                  <div className="flex flex-col flex-1 min-w-0">
-                    <h3 className="text-base font-medium text-gray-400 line-through truncate">Weekly Sync with Design Team</h3>
-                    <div className="flex items-center gap-3 mt-1 text-xs text-gray-500">
-                      <span className="flex items-center gap-1">
-                        <span className="material-symbols-outlined text-[14px]">check_circle</span>
-                        Completed
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="hidden sm:flex px-3 py-1 rounded-full text-xs font-medium bg-white/5 border border-white/5 text-gray-500 line-through">#Meeting</span>
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 pl-2 border-l border-white/10">
-                      <button className="size-8 flex items-center justify-center rounded-full hover:bg-red-500/20 text-gray-400 hover:text-red-400">
-                        <span className="material-symbols-outlined text-[18px]">delete</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
+                {loading ? (
+                  <div className="text-center py-10 text-gray-400">Loading tasks...</div>
+                ) : tasks.length === 0 ? (
+                  <div className="text-center py-10 text-gray-400">No tasks found. Create one to get started!</div>
+                ) : (
+                  <AnimatePresence>
+                    {tasks.map((task) => (
+                      <TaskItem 
+                        key={task.id} 
+                        task={task}
+                        onDelete={handleDelete}
+                        onToggleComplete={handleToggleComplete}
+                      />
+                    ))}
+                  </AnimatePresence>
+                )}
               </div>
             </div>
           </div>

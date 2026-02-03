@@ -1,13 +1,11 @@
 // frontend/src/components/landing-page/LandingPageFeatures.tsx
 import React from 'react';
-import Link from 'next/link';
 
 interface FeatureCardProps {
   icon: string;
   title: string;
   description: string;
   linkText: string;
-  linkHref: string;
   iconGradientFrom: string;
   iconGradientTo: string;
   shadowColor: string;
@@ -19,7 +17,6 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
   title,
   description,
   linkText,
-  linkHref,
   iconGradientFrom,
   iconGradientTo,
   shadowColor,
@@ -103,7 +100,6 @@ const LandingPageFeatures: React.FC = () => {
             title="AI Chatbot"
             description="Talk to your tasks. Our advanced NLP engine understands natural language and context for seamless interaction."
             linkText="Learn more"
-            linkHref="#"
             iconGradientFrom="from-primary"
             iconGradientTo="to-pink-500"
             shadowColor="shadow-purple-500/20 light:shadow-purple-500/30"
@@ -114,7 +110,6 @@ const LandingPageFeatures: React.FC = () => {
             title="Smart Reminders"
             description="Never miss a beat. Context-aware notifications exactly when you need them, based on location and priority."
             linkText="Explore reminders"
-            linkHref="#"
             iconGradientFrom="from-blue-500"
             iconGradientTo="to-cyan-400"
             shadowColor="shadow-blue-500/20 light:shadow-blue-500/30"
@@ -125,7 +120,6 @@ const LandingPageFeatures: React.FC = () => {
             title="Cloud Sync"
             description="Always with you. Real-time synchronization across all your devices with end-to-end encryption."
             linkText="See how it works"
-            linkHref="#"
             iconGradientFrom="from-emerald-500"
             iconGradientTo="to-teal-400"
             shadowColor="shadow-emerald-500/20 light:shadow-emerald-500/30"
@@ -136,7 +130,6 @@ const LandingPageFeatures: React.FC = () => {
             title="Event-Driven"
             description="Trigger based automations. Automatically create tasks based on calendar events, emails, or webhooks."
             linkText="View integrations"
-            linkHref="#"
             iconGradientFrom="from-orange-500"
             iconGradientTo="to-amber-500"
             shadowColor="shadow-orange-500/20 light:shadow-orange-500/30"
@@ -147,7 +140,6 @@ const LandingPageFeatures: React.FC = () => {
             title="Recurring Tasks"
             description="Set and forget. Powerful logic for complex repeating schedules like 'Every last Friday of the month'."
             linkText="Scheduling details"
-            linkHref="#"
             iconGradientFrom="from-indigo-500"
             iconGradientTo="to-violet-500"
             shadowColor="shadow-indigo-500/20 light:shadow-indigo-500/30"
@@ -158,7 +150,6 @@ const LandingPageFeatures: React.FC = () => {
             title="Multi-Platform"
             description="Everywhere you are. Native apps for Mac, Windows, iOS, and Android with seamless handoff."
             linkText="Download apps"
-            linkHref="#"
             iconGradientFrom="from-pink-500"
             iconGradientTo="to-rose-500"
             shadowColor="shadow-pink-500/20 light:shadow-pink-500/30"

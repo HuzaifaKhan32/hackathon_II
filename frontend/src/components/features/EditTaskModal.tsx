@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface Task {
   id: string;
@@ -9,11 +9,17 @@ interface Task {
   is_completed: boolean;
 }
 
+interface TaskData {
+  title: string;
+  description: string;
+  is_completed: boolean;
+}
+
 interface EditTaskModalProps {
   isOpen: boolean;
   onClose: () => void;
   task?: Task | null;
-  onSave: (data: any) => Promise<void>;
+  onSave: (data: TaskData) => Promise<void>;
 }
 
 export default function EditTaskModal({ isOpen, onClose, task, onSave }: EditTaskModalProps) {
@@ -32,7 +38,7 @@ export default function EditTaskModal({ isOpen, onClose, task, onSave }: EditTas
       setDescription('');
       setIsCompleted(false);
     }
-  }, [task, isOpen]);
+  }, [task]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,6 +50,7 @@ export default function EditTaskModal({ isOpen, onClose, task, onSave }: EditTas
       setLoading(false);
     }
   };
+
 
   if (!isOpen) return null;
 

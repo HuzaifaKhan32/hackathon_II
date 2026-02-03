@@ -124,7 +124,7 @@ const LandingPageHero: React.FC = () => {
                     <div className="p-3 rounded-2xl rounded-tl-none text-sm max-w-[80%]
                                     bg-white/10 text-gray-200
                                     light:bg-slate-100 light:text-slate-700 light:font-medium">
-                      I found 3 conflicts. Should I reschedule your "Product Sync"?
+                      I found 3 conflicts. Should I reschedule your &quot;Product Sync&quot;?
                     </div>
                   </div>
                   <div className="flex gap-3 justify-end mt-4">

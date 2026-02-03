@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 const FeaturesSection = () => {
     return (
         <main className="relative pt-24 pb-20">
@@ -109,7 +107,7 @@ const FeaturesSection = () => {
                                 </div>
                                 <h3 className="text-xl font-bold text-white mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-300 group-hover:to-white transition-all">Recurring Tasks</h3>
                                 <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors">
-                                    Set and forget. Powerful logic for complex repeating schedules like "Every last Friday of the month".
+                                    Set and forget. Powerful logic for complex repeating schedules like &quot;Every last Friday of the month&quot;.
                                 </p>
                             </div>
                             <div className="flex items-center gap-2 text-sm font-medium text-indigo-400 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">

@@ -1,6 +1,5 @@
 // frontend/src/components/auth/SignIn.tsx
 import React, { useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useTheme } from 'next-themes'; // To detect current theme
 
@@ -98,7 +97,7 @@ const SignIn: React.FC = () => {
                               light:bg-slate-50 light:border-slate-100">
                 <p className="text-sm leading-relaxed
                               text-slate-300
-                              light:text-slate-600">"Based on your email, I've scheduled the meeting for 2 PM and prepared the agenda."</p>
+                              light:text-slate-600">&quot;Based on your email, I&apos;ve scheduled the meeting for 2 PM and prepared the agenda.&quot;</p>
               </div>
               <div className="flex gap-2">
                 <button className="flex-1 py-2 rounded-lg text-xs font-bold transition-colors
@@ -284,7 +283,7 @@ const SignIn: React.FC = () => {
               <p className="text-sm
                             text-slate-400
                             light:text-slate-500">
-                Don't have an account?{' '}
+                Don&apos;t have an account?{' '}
                 <Link href="#" className="font-semibold transition-colors
                                           text-primary hover:text-white
                                           light:hover:text-primary/80">
