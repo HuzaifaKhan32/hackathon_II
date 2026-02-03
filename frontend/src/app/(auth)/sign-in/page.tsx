@@ -2,28 +2,18 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
 
 export default function SignInPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-
-    if (password !== confirmPassword) {
-        setError("Passwords do not match");
-        return;
-    }
-
     setIsLoading(true);
     
     try {
@@ -203,42 +193,21 @@ export default function SignInPage() {
                     </div>
                   </div>
 
-                  {/* Confirm Password Field */}
-                  <div className="group">
-                    <label className="block text-sm font-medium text-slate-300 mb-2 ml-1" htmlFor="confirmPassword">Confirm Password</label>
-                    <div className="relative flex items-center">
-                      <span className="absolute left-4 text-slate-400 material-symbols-outlined pointer-events-none group-focus-within:text-primary transition-colors">lock_reset</span>
-                      <input 
-                        id="confirmPassword"
-                        type={showConfirmPassword ? "text" : "password"}
-                        className="w-full h-14 pl-12 pr-12 bg-[#131118]/50 border border-slate-700 rounded-full text-white placeholder-slate-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300"
-                        placeholder="Confirm your password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        required
-                      />
-                      <button 
-                        type="button"
-                        className="absolute right-4 text-slate-400 hover:text-white transition-colors flex items-center justify-center"
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      >
-                        <span className="material-symbols-outlined text-[20px]">
-                          {showConfirmPassword ? 'visibility' : 'visibility_off'}
-                        </span>
-                      </button>
-                    </div>
-                    <div className="flex justify-end mt-2 mr-1">
-                      <Link href="#" className="text-sm text-slate-400 hover:text-primary transition-colors">Forgot password?</Link>
-                    </div>
-                  </div>
-
                   {/* Submit Button - USING EXPLICIT HEX FOR GRADIENT TO ENSURE VISIBILITY */}
                   <button 
                     type="submit"
                     disabled={isLoading}
                     className="mt-2 w-full h-14 rounded-full bg-gradient-to-r from-[#895bf5] to-[#7042d2] text-white font-bold text-lg shadow-[0_0_20px_rgba(137,91,245,0.4)] hover:shadow-[0_0_30px_rgba(137,91,245,0.6)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                   >
-                    {isLoading ? 'Signing In...' : (
+                    {isLoading ? (
+                        <div className="flex items-center gap-2">
+                            <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Signing In...
+                        </div>
+                    ) : (
                       <>
                         Sign In
                         <span className="material-symbols-outlined text-sm font-bold">arrow_forward</span>

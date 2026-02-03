@@ -2,8 +2,9 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
-import { LogOut, ChevronRight } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import LogoutModal from '@/components/modals/LogoutModal';
+import Image from 'next/image';
 
 interface SidebarProps {
   onChatToggle?: () => void;
@@ -96,7 +97,7 @@ export default function Sidebar({ onChatToggle, isChatOpen }: SidebarProps) {
                   <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-primary to-accent-cyan animate-pulse opacity-70"></div>
                   <div className="flex items-center justify-center rounded-full size-10 relative border-2 border-[#0f0f13] bg-gray-700 text-white font-bold text-lg overflow-hidden">
                     {user?.image ? (
-                        <img src={user.image} alt={user.name || 'User'} className="w-full h-full object-cover" />
+                        <Image src={user.image} alt={user.name || 'User'} width={40} height={40} className="w-full h-full object-cover" />
                     ) : (
                         <span>{user?.email?.[0].toUpperCase() || 'U'}</span>
                     )}

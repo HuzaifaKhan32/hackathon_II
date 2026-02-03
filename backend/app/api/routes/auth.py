@@ -6,7 +6,7 @@ from app.services.auth_service import AuthService
 from app import security
 from app.config import settings
 from app.database import get_session
-from app.models.user import UserCreate, UserRead
+from app.models.user import UserCreate, UserRead, UserVerify
 
 router = APIRouter()
 
@@ -34,9 +34,17 @@ async def login_user(form_data: OAuth2PasswordRequestForm = Depends(), service: 
 
 
 @router.post("/verify-email")
-async def verify_email():
-    # Placeholder for email verification logic
-    return {"message": "Email verification endpoint (placeholder)"}
+async def verify_email(user_verify: UserVerify, service: AuthService = Depends(get_auth_service)):
+    try:
+        user = await service.verify_user(user_verify.token)
+        return {"message": f"User {user.email} successfully verified!"}
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"An unexpected error occurred during email verification: {e}"
+        )
 
 @router.get("/me")
 async def read_current_user(service: AuthService = Depends(get_auth_service)):

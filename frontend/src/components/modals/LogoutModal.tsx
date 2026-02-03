@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { LogOut, AlertTriangle, X } from 'lucide-react';
+import { LogOut, X } from 'lucide-react';
 
 interface LogoutModalProps {
   isOpen: boolean;
@@ -11,14 +10,8 @@ interface LogoutModalProps {
 }
 
 export default function LogoutModal({ isOpen, onClose, onConfirm }: LogoutModalProps) {
-  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-    return () => setMounted(false);
-  }, []);
-
-  if (!isOpen || !mounted) return null;
+  if (!isOpen || typeof window === 'undefined') return null;
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">

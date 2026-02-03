@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { api } from '@/lib/api';
 import { toast } from 'sonner';
 import { AnimatePresence } from 'framer-motion';
@@ -25,7 +25,7 @@ export default function TaskList({ onAddTask, filter = 'all' }: TaskListProps) {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchTasks = async () => {
+  const fetchTasks = useCallback(async () => {
     try {
       setLoading(true);
       const response = await api.get('/tasks/');
@@ -34,7 +34,7 @@ export default function TaskList({ onAddTask, filter = 'all' }: TaskListProps) {
         priority: index % 3 === 0 ? 'High' : index % 2 === 0 ? 'Medium' : 'Low',
         tags: index % 4 === 0 ? ['frontend', 'bug'] : index % 3 === 0 ? ['backend', 'feature'] : ['docs'],
       }));
-
+  
       // Client-side filtering
       if (filter === 'today') {
         const today = new Date().toISOString().split('T')[0];
@@ -43,7 +43,7 @@ export default function TaskList({ onAddTask, filter = 'all' }: TaskListProps) {
         // Since we don't have due_date, we'll treat 'upcoming' as pending tasks for now
         fetchedTasks = fetchedTasks.filter(task => !task.is_completed);
       }
-
+  
       setTasks(fetchedTasks);
     } catch (error) {
       console.error("Failed to fetch tasks", error);
@@ -51,7 +51,7 @@ export default function TaskList({ onAddTask, filter = 'all' }: TaskListProps) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filter]);
 
   useEffect(() => {
     fetchTasks();
@@ -60,7 +60,6 @@ export default function TaskList({ onAddTask, filter = 'all' }: TaskListProps) {
   const handleDelete = async (id: string) => {
     try {
         // Optimistically remove the task from the UI
-        const originalTasks = tasks;
         setTasks(tasks.filter(t => t.id !== id));
         toast.success("Task deleted");
         await api.delete(`/tasks/${id}`);

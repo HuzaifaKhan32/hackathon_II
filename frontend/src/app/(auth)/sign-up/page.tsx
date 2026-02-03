@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api'; // Corrected to named export based on build error
 // If api is not default, I might need { api }. But user error showed "api.post".
 
@@ -15,7 +14,26 @@ export default function SignUpPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const router = useRouter();
+  const [passwordValidation, setPasswordValidation] = useState({
+    length: false,
+    uppercase: false,
+    number: false,
+  });
+
+  const validatePassword = (password: string) => {
+    setPasswordValidation({
+      length: password.length >= 8,
+      uppercase: /[A-Z]/.test(password),
+      number: /\d/.test(password),
+    });
+  };
+  
+  useEffect(() => {
+    validatePassword(password);
+  }, [password]);
+
+  const allPasswordRequirementsMet = Object.values(passwordValidation).every(Boolean);
+
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,6 +43,12 @@ export default function SignUpPage() {
       setError("Passwords do not match");
       return;
     }
+
+    if (!allPasswordRequirementsMet) {
+        setError("Password does not meet all requirements.");
+        return;
+      }
+  
 
     setIsLoading(true);
     
@@ -194,6 +218,18 @@ export default function SignUpPage() {
                         </button>
                         </div>
                     </div>
+                    {/* Password Validation Checklist */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-2 text-xs px-2 mt-[-8px] text-slate-400">
+                        <span className={`transition-colors ${passwordValidation.length ? 'text-green-400' : 'text-slate-500'}`}>
+                        8+ characters
+                        </span>
+                        <span className={`transition-colors ${passwordValidation.uppercase ? 'text-green-400' : 'text-slate-500'}`}>
+                        1 uppercase
+                        </span>
+                        <span className={`transition-colors ${passwordValidation.number ? 'text-green-400' : 'text-slate-500'}`}>
+                        1 number
+                        </span>
+                    </div>
 
                     {/* Confirm Password Field */}
                     <div className="group">
@@ -224,10 +260,18 @@ export default function SignUpPage() {
                     {/* Submit Button */}
                     <button 
                         type="submit"
-                        disabled={isLoading}
+                        disabled={isLoading || !allPasswordRequirementsMet || password !== confirmPassword}
                         className="mt-2 w-full h-14 rounded-full bg-gradient-to-r from-[#895bf5] to-[#7042d2] text-white font-bold text-lg shadow-[0_0_20px_rgba(137,91,245,0.4)] hover:shadow-[0_0_30px_rgba(137,91,245,0.6)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                     >
-                        {isLoading ? 'Creating Account...' : (
+                        {isLoading ? (
+                            <div className="flex items-center gap-2">
+                                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                Creating Account...
+                            </div>
+                        ) : (
                         <>
                             Sign Up
                             <span className="material-symbols-outlined text-sm font-bold">arrow_forward</span>
